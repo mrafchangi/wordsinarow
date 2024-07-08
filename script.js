@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { word: 'fast', synonyms: ['quick', 'slow', 'rapid'] },
         // Add more words and synonyms as needed
     ];
-    
+
     let currentWordIndex = 0;
     let score = 0;
 
@@ -23,15 +23,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.querySelectorAll('.synonym-button').forEach(button => {
             button.addEventListener('click', (e) => {
-                if (wordObj.synonyms[0] === e.target.innerText) {
-                    score++;
-                }
-                currentWordIndex++;
-                if (currentWordIndex < words.length) {
-                    displayWord();
-                } else {
-                    gameContainer.innerHTML = `<h2>Game Over! Final Score: ${score}</h2>`;
-                }
+                const correct = wordObj.synonyms[0] === e.target.innerText;
+                e.target.style.backgroundColor = correct ? 'green' : 'red';
+
+                document.querySelectorAll('.synonym-button').forEach(btn => {
+                    if (btn.innerText === wordObj.synonyms[0]) {
+                        btn.style.backgroundColor = 'green';
+                    } else if (!correct) {
+                        btn.style.backgroundColor = 'red';
+                    }
+                });
+
+                setTimeout(() => {
+                    if (correct) score++;
+                    currentWordIndex++;
+                    if (currentWordIndex < words.length) {
+                        displayWord();
+                    } else {
+                        gameContainer.innerHTML = `<h2>Game Over! Final Score: ${score}</h2>`;
+                    }
+                }, 2000);
             });
         });
     }
